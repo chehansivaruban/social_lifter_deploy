@@ -97,7 +97,6 @@ def get_subjectivity(tweet):
   return TextBlob(tweet).sentiment.subjectivity
 
 # Define function to load KeyBERT model
-@st.cache_data()
 def load_model():
     return KeyBERT(model=model)
 
