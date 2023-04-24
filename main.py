@@ -103,14 +103,8 @@ def load_model():
 # Extract tweet keywords
 def extract_keywords(text):
     kw_model = load_model()
-    # Use str.contains() method to keep only rows where the 'Tweet' column contains English letters
-    cleaned_text = re.findall(r'[a-zA-Z]+', text)
-    cleaned_text_series = pd.Series(cleaned_text)
-    cleaned_text_series = cleaned_text_series.apply(lambda x: nfx.remove_multiple_spaces(x))
-    cleaned_text_series = cleaned_text_series.str.cat(sep=' ')
-    cleaned_text_series = clean_text(cleaned_text_series)
     keywords = kw_model.extract_keywords(
-    cleaned_text_series,
+    text,
     keyphrase_ngram_range=(1, 2),
     use_mmr=True,
     stop_words="english",
@@ -179,7 +173,7 @@ with tab1:
         subjectivity = get_subjectivity(cleaned_text_series)
         sentiment = getSentiment(polarity)
     # print(keywords)
-    extracted_keywords = extract_keywords(text)
+    extracted_keywords = extract_keywords(cleaned_text_series)
     df_key = keyword_dataframe(extracted_keywords)
     df_key.index += 1
     df_key_style =style_dataframe(df_key)
