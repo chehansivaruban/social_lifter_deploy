@@ -4,7 +4,7 @@ from datetime import datetime
 import pandas as pd
 
 
-dt_reg = joblib.load("models\dt\dt_reg_likes.pkl")
+dt_reg = joblib.load("models/dt/dt_reg_likes.pkl")
 
 def get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic):
     isTagged = 1 if isTagged == "True" else 0  
