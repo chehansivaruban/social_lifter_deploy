@@ -113,7 +113,7 @@ with tab1:
     extracted_keywords = extract_keywords(text)
     topic = get_tweet_topic(cleaned_text_series)
     st.write(topic)
-    prediction_likes, prediction_comments, prediction_retweets = get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic)
+    prediction_likes, prediction_comments, prediction_retweets =get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic)
     likes = round(int(prediction_likes[0]))    
     comments = round(int(prediction_comments[0])) 
     retweets = round(int(prediction_retweets[0])) 
