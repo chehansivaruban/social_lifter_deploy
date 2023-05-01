@@ -7,7 +7,7 @@ dt_reg_likes = joblib.load("models/final_model/dt/dt_reg_likes_best_30_04_02.pkl
 dt_reg_comments = joblib.load("models/final_model/random/rf_reg_comments_01_05_01.pkl")
 dt_reg_retweets = joblib.load("models/final_model/dt/dt_reg_retweets_best_01_05_01.pkl")
 
-def get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic):
+async def get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic):
     isTagged = 1 if isTagged == "True" else 0  
     isLocation = 1 if isLocation == "True" else 0  
     isVerified = 1 if isVerified == "True" else 0  
@@ -43,18 +43,25 @@ def get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, follower
     })
 
     df = pd.DataFrame(inputs)
-    prediction_likes = dt_reg_likes.predict(df)
+    prediction_likes = await predict_likes(df)
     # Perform action after prediction_likes
     print("Prediction for likes:", prediction_likes)
 
-    prediction_comments = dt_reg_comments.predict(df)
+    prediction_comments = await predict_comments(df)
     # Perform action after prediction_comments
     print("Prediction for comments:", prediction_comments)
 
-    prediction_retweets = dt_reg_retweets.predict(df)
+    prediction_retweets = await predict_retweets(df)
     # Perform action after prediction_retweets
     print("Prediction for retweets:", prediction_retweets)
 
     return prediction_likes, prediction_comments, prediction_retweets
     
-    
+async def predict_likes(df):
+    return await dt_reg_likes.predict(df)
+
+async def predict_comments(df):
+    return await dt_reg_comments.predict(df)
+
+async def predict_retweets(df):
+    return await dt_reg_retweets.predict(df)
