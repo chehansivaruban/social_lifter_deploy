@@ -15,7 +15,6 @@ tensorflow
 requests
 datetime
 keras
-re
 tweepy
 Counter
 nltk
