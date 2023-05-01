@@ -44,8 +44,17 @@ def get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, follower
 
     df = pd.DataFrame(inputs)
     prediction_likes = dt_reg_likes.predict(df)
+    # Perform action after prediction_likes
+    print("Prediction for likes:", prediction_likes)
+
     prediction_comments = dt_reg_comments.predict(df)
+    # Perform action after prediction_comments
+    print("Prediction for comments:", prediction_comments)
+
     prediction_retweets = dt_reg_retweets.predict(df)
+    # Perform action after prediction_retweets
+    print("Prediction for retweets:", prediction_retweets)
+
     return prediction_likes, prediction_comments, prediction_retweets
     
     
