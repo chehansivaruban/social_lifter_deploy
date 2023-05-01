@@ -4,7 +4,7 @@ import pandas as pd
 
 
 dt_reg_likes = joblib.load("models/final_model/dt/dt_reg_likes_best_30_04_02.pkl")
-dt_reg_comments = joblib.load("models/final_model/random/rf_reg_comments_01_05_01.pkl")
+dt_reg_comments = joblib.load("models/final_model/dt/dt_reg_comments_best_01_05_01.pkl")
 dt_reg_retweets = joblib.load("models/final_model/dt/dt_reg_retweets_best_01_05_01.pkl")
 
 async def get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic):
