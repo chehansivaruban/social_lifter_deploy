@@ -5,7 +5,7 @@ from gensim.utils import simple_preprocess
 
 
 # Load the LDA model and the dictionary
-lda_model = gensim.models.ldamodel.LdaModel.load('models/lda_model/lda_model')
+lda_model = gensim.models.ldamodel.LdaModel.load('models/lda_model/lda_model.pickle')
 dictionary = gensim.corpora.Dictionary.load('models/lda_model/lda_model.id2word')
 
 def get_tweet_topic(tweet_text):

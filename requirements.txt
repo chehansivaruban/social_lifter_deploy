@@ -12,4 +12,12 @@ joblib==1.2.0
 plotly==5.5.0
 numpy==1.21.4
 tensorflow
-spacy
+requests
+datetime
+keras
+re
+tweepy
+Counter
+nltk
+openai
+collections

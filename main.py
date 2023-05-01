@@ -1,8 +1,6 @@
 import streamlit as st
 import plotly.graph_objs as go
 from sidebar import get_user_inputs
-import numpy as np
-import tensorflow as tf
 
 
 from display import (
@@ -25,6 +23,11 @@ from regression_model import (
     get_dt_pred
 )
 
+
+from tweet_generator import (
+    tweet_generator
+)
+
 from emotion import (
     get_emotion
 )
@@ -43,6 +46,9 @@ from text_processing import (
 from embed_tweet import (
     get_embedded_tweet
 )
+from tweet_analyzer import (
+    display_analyze
+)
 
 # Configure Streamlit page
 st.set_page_config(
@@ -51,9 +57,50 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="expanded",
 )
+st.markdown("""
+    <style>
+        
+
+        .stButton button {
+            background-color: #1DA1F2;
+            color: white;
+            border-radius: 5px;
+            padding: 0.5em 1em;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .stButton button:hover {
+        background-color: #9e1f63;
+        transition: background-color 0.5s ease, color 0.5s ease;
+        color: black !important;
+        border: 1px solid #9e1f63;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stTextInput input {
+            border: 2px solid #1DA1F2;
+            border-radius: 5px;
+            padding: 0.5em;
+        }
+
+        .stSelectbox select {
+            background-color: #f5f5f5;
+            border: 2px solid #1DA1F2;
+            border-radius: 5px;
+            padding: 0.5em;
+            color: #1DA1F2;
+            font-weight: bold;
+        }
+
+        .stGraph {
+            height: 500px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 hide_streamlit_footer()
 display_page_header()
-tab1, tab2, tab3= st.tabs(["Tweet Reach Predictor", "Generate Tweet", "Info"])
+tab1, tab2, tab3, tab4,tab5= st.tabs(["Tweet Reach Predictor","Analyze Account", "Generate Tweet","View Tweet" ,"Info"])
 
 with tab1:
   text, date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like, btn = get_user_inputs()
@@ -66,10 +113,12 @@ with tab1:
     extracted_keywords = extract_keywords(text)
     topic = get_tweet_topic(cleaned_text_series)
     st.write(topic)
-    prediction = get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic)
-    likes = round(int(prediction[0]))       
+    prediction_likes, prediction_comments, prediction_retweets = get_dt_pred(date, time, isTagged, isLocation, isHashtag, isCashtag, followers, following, isVerified, account_age, average_like,subjectivity,polarity,sentiment,topic)
+    likes = round(int(prediction_likes[0]))    
+    comments = round(int(prediction_comments[0])) 
+    retweets = round(int(prediction_retweets[0])) 
     st.write()
-    display_container(text,likes)
+    display_container(text,likes,comments,retweets)
     st.markdown("<br>",unsafe_allow_html=True)
     st.markdown("---")
     predCol,predCol1, predCol2 = st.columns([5,8, 10])
@@ -85,7 +134,7 @@ with tab1:
         st.markdown("<br>",unsafe_allow_html=True)
         st.write("Comments")
     with predCol4:
-        st.metric("Comments", "70", "-1.2", label_visibility="hidden")
+        st.metric("Comments", comments, "", label_visibility="hidden")
     st.markdown("---")
     predCol,predCol5, predCol6 = st.columns([5,8, 10])
     with predCol5:
@@ -93,7 +142,7 @@ with tab1:
         st.markdown("<br>",unsafe_allow_html=True)
         st.write("Retweets")
     with predCol6:
-        st.metric("Retweets", "70", "-1.2", label_visibility="hidden")
+        st.metric("Retweets", retweets, "", label_visibility="hidden")
     df_key = keyword_dataframe(extracted_keywords)
     df_key.index += 1
     df_key_style =style_dataframe(df_key)
@@ -131,8 +180,8 @@ with tab1:
 css = '''
 <style>
     .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
-    font-size:1.5rem;
-    margin-right: 100px;
+    font-size:1rem;
+    margin-right: 50;
     position: relative;
     margin-left: 15px;
     }
@@ -141,12 +190,19 @@ css = '''
 st.markdown(css, unsafe_allow_html=True)
 
 with tab2:
-    get_embedded_tweet()
+    display_analyze()
+    
 
-
-# ------------------------info tab ------------------
 
 with tab3:
+    tweet_generator()            
+   
+
+
+with tab4:
+    get_embedded_tweet()
+
+with tab5:
     create_twitter_marketing_plan()
     
 
